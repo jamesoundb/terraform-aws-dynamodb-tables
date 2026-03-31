@@ -30,15 +30,15 @@ resource "aws_dynamodb_table" "table" {
   }
 
   point_in_time_recovery {
-    enabled = lookup(each.value, "point_in_time_recovery", false)
+    enabled = coalesce(each.value.point_in_time_recovery, false)
   }
 
   server_side_encryption {
-    enabled = lookup(each.value, "server_side_encryption", true)
+    enabled = coalesce(each.value.server_side_encryption, true)
   }
 
   tags = merge(
     var.tags,
-    lookup(each.value, "tags", {})
+    coalesce(each.value.tags, {})
   )
 }
